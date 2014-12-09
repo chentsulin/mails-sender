@@ -1,14 +1,15 @@
 'use strict';
 
 var isEmail = require('isemail');
-var transform = require('./lib/transform');
+var format = require('./lib/format');
 var defaultMatcher = require('./lib/matcher');
 var defaultMailer  = require('./lib/mailer');
 
 
-
 function MailMatcher(opts) {
   if ( ! (this instanceof MailMatcher)) return new MailMatcher(opts);
+
+  opts = opts || {};
 
   this.matcher = opts.matcher || defaultMatcher;
   this.mailer  = opts.mailer  || defaultMailer;
@@ -33,25 +34,21 @@ MailMatcher.prototype.match = function(targets, cb) {
     throw new TypeError();
   }
 
-  var length = targets.length
-    , list = []
-    ;
+  var list = [];
 
-  for (var i = 0; i < length; i++) {
+  targets = targets.map(function(t) {
+    return format(t);
+  });
 
-    targets[i] = transform(targets[i]);
-  }
-
-  for (var j = 0; j < length; j++) {
-
-    if (isEmail(targets[j].email)) {
-      list.push(targets[j].email);
+  targets.forEach(function(t) {
+    if (isEmail(t.email)) {
+      list.push(t);
     }
-  }
+  });
 
   var mailList = this.matcher(list);
 
   this.mailer(mailList, cb);
 };
 
-module.export = MailMatcher;
+module.exports = MailMatcher;

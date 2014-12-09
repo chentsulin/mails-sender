@@ -30,7 +30,9 @@
   "dependencies": {
     "nodemailer": "^1.3.0",
     "isemail": "^1.1.1",
-    "email-templates": "^1.1.2"
+    "email-templates": "^1.1.2",
+    "jade": "^1.8.1",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
     "mocha": "^2.0.1",
