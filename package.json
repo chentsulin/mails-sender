@@ -1,7 +1,7 @@
 {
-  "name": "mail-matcher",
+  "name": "mails-sender",
   "version": "0.0.1",
-  "description": "mail-matcher",
+  "description": "mails-sender",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/chentsulin/mail-matcher.git"
+    "url": "git://github.com/chentsulin/mails-sender.git"
   },
   "keywords": [
     "mail",
@@ -24,9 +24,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/mail-matcher/issues"
+    "url": "https://github.com/chentsulin/mails-sender/issues"
   },
-  "homepage": "https://github.com/chentsulin/mail-matcher",
+  "homepage": "https://github.com/chentsulin/mails-sender",
   "dependencies": {
     "nodemailer": "^1.3.0",
     "isemail": "^1.1.1",
