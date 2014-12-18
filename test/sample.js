@@ -1,8 +1,8 @@
 
 var list = [];
 
-var MailMatcher = require('./');
+var MailsSender = require('./');
 
-var matcher = new MailMatcher();
+var sender = new MailsSender();
 
-matcher.match(list);
+sender.send(list);

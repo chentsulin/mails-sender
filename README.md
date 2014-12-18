@@ -1,2 +1,2 @@
-mail-matcher
+mails-sender
 ============

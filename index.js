@@ -1,34 +1,39 @@
 'use strict';
 
+var _ = require('lodash');
 var isEmail = require('isemail');
 var format = require('./lib/format');
-var defaultMatcher = require('./lib/matcher');
 var defaultMailer  = require('./lib/mailer');
 
 
-function MailMatcher(opts) {
-  if ( ! (this instanceof MailMatcher)) return new MailMatcher(opts);
+
+function MailsSender(opts) {
+  if ( ! (this instanceof MailsSender)) return new MailsSender(opts);
 
   opts = opts || {};
 
-  this.matcher = opts.matcher || defaultMatcher;
-  this.mailer  = opts.mailer  || defaultMailer;
+  this.transforms = opts.transforms || [];
+  this.mailer  = opts.mailer || defaultMailer;
 }
 
-MailMatcher.prototype.setMatcher = function(matcher) {
-  if (matcher) {
-    this.matcher = matcher;
+MailsSender.prototype.setTransform = function(transform) {
+  if (transform && typeof transform === 'function') {
+    this.transforms.push(transform);
+  } else {
+    throw new TypeError('transform should be a function');
   }
+  return this;
 };
 
-MailMatcher.prototype.setMailer = function(mailer) {
+MailsSender.prototype.setMailer = function(mailer) {
   if (mailer) {
     this.mailer = mailer;
   }
+  return this;
 };
 
 
-MailMatcher.prototype.match = function(targets, cb) {
+MailsSender.prototype.send = function(targets, cb) {
 
   if ( ! Array.isArray(targets)) {
     throw new TypeError();
@@ -46,9 +51,13 @@ MailMatcher.prototype.match = function(targets, cb) {
     }
   });
 
-  var mailList = this.matcher(list);
+  var mails = _.cloneDeep(targets);
 
-  this.mailer(mailList, cb);
+  this.transforms.forEach(function(t) {
+    mails = t(mails);
+  });
+
+  this.mailer(mails, cb);
 };
 
-module.exports = MailMatcher;
+module.exports = MailsSender;
